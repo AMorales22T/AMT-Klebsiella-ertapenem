@@ -1,0 +1,44 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the associated paper."
+type: software
+title: "Lineage-aware genomic learning exposes clonal inflation in ertapenem resistance prediction"
+
+# TODO: Add ORCIDs if available
+authors:
+  - family-names: "Morales Tena"
+    given-names: "Adolfo"
+    affiliation: "Independent Researcher"
+  - family-names: "Cao"
+    given-names: "Hanqun"
+    affiliation: "Machine Biology Group, University of Pennsylvania, Philadelphia, PA, USA"
+  - family-names: "de la Fuente-Nunez"
+    given-names: "Cesar"
+    affiliation: "Machine Biology Group, University of Pennsylvania, Philadelphia, PA, USA"
+  - family-names: "Sorzano"
+    given-names: "Carlos Oscar"
+    affiliation: "Biocomputing Unit, Centro Nacional de Biotecnología (CNB-CSIC), Madrid, Spain"
+
+# TODO: Replace with the actual DOI once the paper is published.
+doi: "10.5281/zenodo.22753637"
+
+# TODO: Update date-released to the actual submission/publication date.
+date-released: "2026-01-01"
+
+url: "https://github.com/TODO_USUARIO/TODO_REPO"
+
+# TODO: Update with the actual journal reference once accepted.
+preferred-citation:
+  type: article
+  title: "Lineage-aware genomic learning exposes clonal inflation in ertapenem resistance prediction"
+  authors:
+    - family-names: "Morales Tena"
+      given-names: "Adolfo"
+    - family-names: "Cao"
+      given-names: "Hanqun"
+    - family-names: "de la Fuente-Nunez"
+      given-names: "Cesar"
+    - family-names: "Sorzano"
+      given-names: "Carlos Oscar"
+  journal: "TODO: Journal name (e.g., Cell Systems)"
+  year: 2026
+  doi: "10.5281/zenodo.22753637"

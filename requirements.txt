@@ -1,0 +1,29 @@
+# Core deep learning
+torch>=2.3.0
+transformers>=4.41.0
+captum>=0.7.0
+
+# Gradient boosting
+xgboost>=2.0.3
+
+# Interpretability
+shap>=0.45.0
+
+# Bioinformatics
+biopython>=1.83
+
+# Scientific computing
+numpy==2.0.2
+scipy>=1.13.0
+pandas>=2.2.2
+scikit-learn>=1.5.0
+
+# Visualization
+matplotlib>=3.10.1
+seaborn>=0.13.2
+umap-learn>=0.5.6
+
+# Utilities
+joblib>=1.4.2
+openpyxl>=3.1.2
+tqdm>=4.66.4

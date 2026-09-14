@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+venv/
+env/
+.venv/
+.python-version
+
+# Jupyter
+.ipynb_checkpoints
+
+# Large model checkpoints (deposit in Zenodo/HuggingFace, do not push to GitHub)
+*.pth
+*.pt
+*.bin
+*.ckpt
+
+# Raw massive sequence data
+data/raw_rgi/
+data/dataset_limpio/
+
+# Logs & temp
+*.log
+*.tmp
+*.bak
+.DS_Store
+.directory
+
+# System & IDE configs
+.vscode/
+.idea/
+secrets.json
+
+# Whitelist required scientific data & figures
+!results/oof_predictions_pooled.csv
+!results/random_split_predictions.csv
+!results/figures/
+!results/figures/*
+!data/*.csv
+!data/*.xlsx
+# Never publish internal audit files
+data/Auditoria_Final_Armonizada.xlsx
+# Keep the placeholder for models/ directory
+!models/.gitkeep

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="820" viewBox="0 0 1400 820" role="img" aria-labelledby="title desc">
+  <title id="title">Cohort flow and Zenodo provenance reconciliation</title>
+  <desc id="desc">Recorded run-level cohort counts, a separately labelled Zenodo provenance panel, and the ST-blocked analysis branch.</desc>
+  <style>
+    .h { font: 700 28px Arial, sans-serif; fill: #102a43; }
+    .t { font: 18px Arial, sans-serif; fill: #102a43; }
+    .s { font: 15px Arial, sans-serif; fill: #334e68; }
+    .box { stroke: #486581; stroke-width: 2; rx: 12; }
+    .arrow { stroke: #486581; stroke-width: 3; fill: none; marker-end: url(#a); }
+  </style>
+  <defs><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#486581"/></marker></defs>
+  <text x="55" y="55" class="h">Recorded cohort flow and separate provenance reconciliation</text>
+  <text x="55" y="84" class="s">Run-level counts are not an ID-level exclusion ledger.</text>
+
+  <rect x="65" y="135" width="350" height="110" class="box" fill="#e6f6ff"/>
+  <text x="90" y="178" class="t">5,283 input genome IDs</text>
+  <text x="90" y="208" class="s">Recorded at raw feature loading</text>
+  <path d="M240 245 L240 305" class="arrow"/>
+  <rect x="65" y="320" width="350" height="130" class="box" fill="#f0f4f8"/>
+  <text x="90" y="362" class="t">Archived sequence-level processing</text>
+  <text x="90" y="392" class="s">RGI quality and feature filters; contradictory</text>
+  <text x="90" y="415" class="s">DNA sequences removed at sequence level</text>
+  <path d="M240 450 L240 510" class="arrow"/>
+  <rect x="65" y="525" width="350" height="110" class="box" fill="#d9f2e6"/>
+  <text x="90" y="568" class="t">3,848 final-cohort IDs</text>
+  <text x="90" y="598" class="s">3,078 training + 770 held-out validation</text>
+  <text x="65" y="680" class="s">The difference of 1,435 is not shown as a known exclusion</text>
+  <text x="65" y="704" class="s">stage: no ID-level initial/exclusion manifest was retained.</text>
+
+  <path d="M415 580 L535 580" class="arrow"/>
+  <rect x="555" y="525" width="350" height="110" class="box" fill="#fff4d6"/>
+  <text x="580" y="568" class="t">ST-blocked OOF branch: 3,702 IDs</text>
+  <text x="580" y="598" class="s">146 absent: 139 technical duplicates; 7 no-GCA</text>
+
+  <rect x="965" y="125" width="375" height="570" class="box" fill="#f7edf9"/>
+  <text x="990" y="168" class="t">Separate Zenodo provenance panel</text>
+  <text x="990" y="200" class="s">854 ledger records; not a filtering branch</text>
+  <line x1="990" y1="225" x2="1315" y2="225" stroke="#9f7aea" stroke-width="2"/>
+  <text x="990" y="270" class="t">354 exact GCA/GCF matches</text>
+  <text x="990" y="315" class="t">200 exact RGI/EuSCAPE filename matches</text>
+  <text x="990" y="360" class="t">130 stable EuSCAPE-code links</text>
+  <text x="990" y="405" class="t">684/854 traceable representations</text>
+  <line x1="990" y1="430" x2="1315" y2="430" stroke="#9f7aea" stroke-width="2"/>
+  <text x="990" y="475" class="t">170 unresolved provenance</text>
+  <text x="990" y="505" class="s">No cause of exclusion assigned</text>
+  <text x="990" y="535" class="s">No assertion of membership in the 1,435</text>
+  <text x="990" y="565" class="s">difference between aggregate run counts</text>
+  <text x="990" y="635" class="s">Evidence: Zenodo_854_ID_traceability.csv</text>
+</svg>

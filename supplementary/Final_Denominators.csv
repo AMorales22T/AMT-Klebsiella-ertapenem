@@ -1,0 +1,7 @@
+Dataset / Analysis,N,Relationship
+Input Universe (BV-BRC),34773,Raw download from database
+Valid S/R (cepasv2.xlsx base),4869,Filtered out 'Unknown/ambiguous' phenotypes
+Input Master (Tabla_Maestra_Cepas_Final.xlsx),5107,Includes all candidates before ML filter
+Final ML Master (Tabla_Maestra_ST_5Fold.xlsx),3708,"Survived ML anti-leakage filter (1,399 dropped)"
+OOF Predictions (oof_predictions_pooled.csv),3702,"Missing 56 Master IDs, contains 50 corrupted Orphan IDs"
+Random Split Predictions (random_split_predictions.csv),770,Single held-out test fold
