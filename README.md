@@ -14,7 +14,7 @@ Predicting antimicrobial resistance directly from genomic sequences is frequentl
 
 To solve this:
 1. **ST-Blocked Cross-Validation (Primary Evaluation)**: Isolates are grouped strictly by Sequence Type (ST) using 5-fold StratifiedGroupKFold (`random_state=4350`). Under this protocol, the attention-based Multiple Instance Learning (MIL) model achieves an **AUC of 0.8111 (95% CI: [0.7972, 0.8250])**, and the hybrid MIL + XGBoost model obtains an **AUC of 0.7981 (95% CI: [0.7837, 0.8125])**.
-2. **Random-Split Leakage Benchmark**: Under conventional random partitioning (3,848 / 770 test set), the model overestimates performance with an **AUC of 0.9621 (95% CI: [0.9500, 0.9743])**, demonstrating a statistically significant performance drop ($\Delta\text{AUC} = -0.1562$, $p = 0.0014$) when clonal structure is properly controlled.
+2. **Random-Split Leakage Benchmark**: Under conventional random partitioning (3,848 / 770 test set), the MIL+XGBoost model achieves an **AUC of 0.9621 (95% CI: [0.9500, 0.9743])**. This estimate is retained as a **leakage comparator only** — because the random-split and ST-blocked results were obtained with different classifier configurations, their absolute AUC difference should not be interpreted as an architecture-matched estimate of the effect of clonal structure (see manuscript Discussion). For an architecture-matched comparison: MIL-only under random split achieves AUC 0.9182 vs. AUC 0.8111 under ST-blocking (ΔAUC ≈ 0.107).
 
 ---
 
@@ -25,7 +25,7 @@ To solve this:
 │   ├── dataset_manifest_colab.csv       # Master cohort (3,708 isolates) with STs and splits
 │   ├── Tabla_Maestra_ST_5Fold.xlsx      # Master 5-fold ST-blocked cross-validation table
 │   ├── cepasv2.xlsx                     # Complete BV-BRC raw metadata table (4,869 isolates)
-│   ├── Auditoria_Final_Armonizada.xlsx  # Resistance mechanisms audit table (854 isolates)
+│   ├── Auditoria_Final_Armonizada.xlsx  # Resistance mechanism audit (Zenodo-derived subset, 854 isolates; 355 resistant). Note: Manuscript Table 5 stratifies 1,449 resistant isolates from the full OOF set; remaining labels derive from CARD-RGI automatic annotations.
 │   └── README.md
 ├── notebooks/                           # Step-by-step Jupyter notebooks (Colab & local ready)
 │   ├── 01_prepare_dataset.ipynb         # Raw RGI filtering and ST-blocked split curation
@@ -114,18 +114,24 @@ python scripts/test_bootstrap.py
 | :--- | :---: | :---: | :---: | :---: | :---: |
 | **ST-Blocked CV (MIL-only)** | 3,702 | **0.8111** | [0.7972, 0.8250] | 34.1% | 20.4% |
 | **ST-Blocked CV (MIL + XGBoost)** | 3,702 | **0.7981** | [0.7837, 0.8125] | 53.6% | 12.3% |
-| **Random Split Benchmark (Leakage)** | 770 | **0.9621** | [0.9500, 0.9743] | 7.9% | 4.8% |
-| **Biological Rule Baseline** | 487 | — | — | 0.0% | 36.1% |
+| **Random Split Benchmark (Leakage)** ¹ | 770 | **0.9621** | [0.9500, 0.9743] | 7.9% | 4.8% |
+| **Biological Rule Baseline** (OOF, carbapenemase rule) | 3,702 | — | — | 4.6% | 36.1% |
 
-- **Paired DeLong Test (MIL+XGBoost vs MIL-only)**: $\Delta\text{AUC} = -0.0130$, $z = -2.7535$, $p = 0.0059$.
-- **Clonal Leakage Effect**: $\Delta\text{AUC} = -0.1562$ (16.2% drop, $p = 0.0014$, one-sided $t$-test).
+> **Note on Biological Rule Baseline**: The rule (predict Resistant if any carbapenemase gene detected) was applied to the full ST-blocked OOF set (n = 3,702). VME = 4.6% (66/1,449 resistant isolates lacking carbapenemases); ME = 36.1%. The `Auditoria_Final_Armonizada.xlsx` file covers a separate, earlier Zenodo-derived subset of 854 isolates (355 resistant) with full mechanism annotation.
+
+
+
+- **MIL-only vs MIL+XGBoost (ST-blocked)**: $\Delta\text{AUC} = -0.0130$; paired $t$-test over 5-fold AUCs $p = 0.96$; cluster bootstrap $p > 0.05$ → difference **not significant** (primary tests). *(Note: a pooled DeLong test yields p = 0.0059, but it is anti-conservative here as it ignores ST-level clustering and is not used as the primary test.)*
+- **Clonal leakage (architecture-matched)**: MIL-only random split (AUC 0.9182) vs MIL-only ST-blocked (AUC 0.8111), $\Delta\text{AUC} \approx -0.107$. The raw difference 0.9621 − 0.8111 mixes different classifier configurations (MIL+XGBoost vs MIL-only) and **must not** be interpreted as an architecture-matched leakage estimate (see manuscript Discussion).
+
+> ¹ **Random Split row**: Model = MIL+XGBoost v5.3 (leakage comparator); decision threshold = 0.50 (default). VME 7.9% and ME 4.8% are reported at this operating point. The threshold sweep (Supplementary Figure S1) shows Recall = 0.824 at threshold 0.50 for MIL-only; results are not directly comparable across configurations. See `scripts/compute_stats.py` to reproduce these figures.
 
 ---
 
 ## Data Availability & Model Weights
 
 - **Processed Data**: All metadata, manifests, ST labels, and out-of-fold predictions required to reproduce the paper's analytical findings are included directly in `data/` and `results/`.
-- **Raw Sequence Data**: Raw genomic assemblies can be downloaded directly from [BV-BRC](https://www.bv-brc.org/) using the accessions listed in `data/cepasv2.xlsx` and `data/dataset_manifest_colab.csv`. RGI (v6.0.3) was executed against the CARD database (v4.0.122).
+- **Raw Sequence Data**: Raw genomic assemblies can be downloaded directly from [BV-BRC](https://www.bv-brc.org/) using the accessions listed in `data/cepasv2.xlsx` and `data/dataset_manifest_colab.csv`. RGI (v6.0.3) was executed against the CARD database (v4.0.1 — *⚠️ verify: "v4.0.122" may be a paste artifact joining version "4.0.1" with citation "[22]"; confirm with `rgi database --version` in the original pipeline environment*).
 - **Pretrained Foundation Model**: The nucleotide embedding backbone uses `InstaDeepAI/NTV3_100M_post` available via Hugging Face.
 - **Trained Model Weights**: Trained PyTorch checkpoints (`modelo_MIL_v5.1_best_auc.pth`, ~1.3 GB) exceed standard GitHub repository limits (< 100 MB). Checkpoints are deposited on Zenodo [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22753637.svg)](https://doi.org/10.5281/zenodo.22753637) and can be placed in `models/` for full inference reproduction.
 
