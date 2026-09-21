@@ -15,7 +15,7 @@ authors:
     given-names: "Cesar"
     affiliation: "Machine Biology Group, University of Pennsylvania, Philadelphia, PA, USA"
   - family-names: "Sorzano"
-    given-names: "Carlos Oscar"
+    given-names: "Carlos Oscar S."
     affiliation: "Biocomputing Unit, Centro Nacional de Biotecnología (CNB-CSIC), Madrid, Spain"
 
 # TODO: Replace with the actual DOI once the paper is published.
@@ -24,7 +24,7 @@ doi: "10.5281/zenodo.22753637"
 # TODO: Update date-released to the actual submission/publication date.
 date-released: "2026-01-01"
 
-url: "https://github.com/TODO_USUARIO/TODO_REPO"
+url: "https://github.com/AMorales22T/AMT-Klebsiella-ertapenem"
 
 # TODO: Update with the actual journal reference once accepted.
 preferred-citation:
@@ -38,7 +38,7 @@ preferred-citation:
     - family-names: "de la Fuente-Nunez"
       given-names: "Cesar"
     - family-names: "Sorzano"
-      given-names: "Carlos Oscar"
+      given-names: "Carlos Oscar S."
   journal: "TODO: Journal name (e.g., Cell Systems)"
   year: 2026
   doi: "10.5281/zenodo.22753637"

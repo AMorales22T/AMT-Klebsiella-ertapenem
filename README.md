@@ -12,6 +12,9 @@ This repository contains the complete reproducible codebase, analysis scripts, m
 
 Predicting antimicrobial resistance directly from genomic sequences is frequently compromised by **clonal data leakage**: isolates belonging to the same Sequence Type (ST) or clonal lineage share near-identical resistomes and genetic backgrounds. When randomly split between training and evaluation sets, standard models exploit lineage markers rather than learning true causal resistance determinants, leading to heavily inflated performance metrics.
 
+![Figure 1: Interpretable hybrid MIL-XGBoost workflow](results/figures/Figure1_updated.png)
+*Figure 1: Interpretable hybrid MIL-XGBoost workflow for genome-level resistance prediction ([download vector PDF](results/figures/Figure1_updated.pdf)).*
+
 To solve this:
 1. **ST-Blocked Cross-Validation (Primary Evaluation)**: Isolates are grouped strictly by Sequence Type (ST) using 5-fold StratifiedGroupKFold (`random_state=4350`). Under this protocol, the attention-based Multiple Instance Learning (MIL) model achieves an **AUC of 0.8111 (95% CI: [0.7972, 0.8250])**, and the hybrid MIL + XGBoost model obtains an **AUC of 0.7981 (95% CI: [0.7837, 0.8125])**.
 2. **Random-Split Leakage Benchmark**: Under conventional random partitioning (3,848 / 770 test set), the MIL+XGBoost model achieves an **AUC of 0.9621 (95% CI: [0.9500, 0.9743])**. This estimate is retained as a **leakage comparator only** — because the random-split and ST-blocked results were obtained with different classifier configurations, their absolute AUC difference should not be interpreted as an architecture-matched estimate of the effect of clonal structure (see manuscript Discussion). For an architecture-matched comparison: MIL-only under random split achieves AUC 0.9182 vs. AUC 0.8111 under ST-blocking (ΔAUC ≈ 0.107).
@@ -38,6 +41,7 @@ To solve this:
 │   ├── oof_predictions_pooled.csv       # 3,702 pooled out-of-fold cross-validation predictions
 │   ├── random_split_predictions.csv     # 770 random split test predictions
 │   ├── figures/                         # Generated high-resolution publication figures
+│   │   ├── Figure1_updated.png          # Workflow overview schematic (PNG & PDF)
 │   │   ├── Figure_AUC_Comparison.png    # Primary clonal leakage comparison figure (PNG & PDF)
 │   │   ├── Figure_AUC_OptionA_Subset.png# ROC curve vs. biological rule on 487 subset
 │   │   └── Figure_AUC_OptionB_Full.png  # Full OOF ROC curves and relative performance drop
@@ -55,6 +59,7 @@ To solve this:
 │   └── __init__.py
 ├── supplementary/                       # Supplementary materials and lab checklists
 │   ├── Supplementary_Figure_S4_Cohort_Flow.svg # Cohort flow diagram
+│   ├── Supplementary_Table_S2_ST_Distribution.xlsx # ST breakdown (416 STs, N=3,708)
 │   ├── Final_Denominators.csv           # Reconciled cohort sizes across all analysis stages
 │   ├── Reconciliation_3708_vs_3702.csv  # Isolate-level master-to-OOF traceability
 │   ├── de_la_Fuente_Lab_Checklist.pdf   # Completed computational reproducibility checklist
@@ -110,12 +115,12 @@ python scripts/test_bootstrap.py
 
 ### Key Verified Results
 
-| Protocol / Model | Cohort $N$ | ROC-AUC | 95% Confidence Interval | VME Rate | ME Rate |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| **ST-Blocked CV (MIL-only)** | 3,702 | **0.8111** | [0.7972, 0.8250] | 34.1% | 20.4% |
-| **ST-Blocked CV (MIL + XGBoost)** | 3,702 | **0.7981** | [0.7837, 0.8125] | 53.6% | 12.3% |
-| **Random Split Benchmark (Leakage)** ¹ | 770 | **0.9621** | [0.9500, 0.9743] | 7.9% | 4.8% |
-| **Biological Rule Baseline** (OOF, carbapenemase rule) | 3,702 | — | — | 4.6% | 36.1% |
+| Protocol / Model | Cohort $N$ | ROC-AUC | 95% Confidence Interval | PR-AUC | VME Rate | ME Rate |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **ST-Blocked CV (MIL-only)** | 3,702 | **0.8111** | [0.7972, 0.8250] | **0.7404** | 34.1% | 20.4% |
+| **ST-Blocked CV (MIL + XGBoost)** | 3,702 | **0.7981** | [0.7837, 0.8125] | **0.6899** | 53.6% | 12.3% |
+| **Random Split Benchmark (Leakage)** ¹ | 770 | **0.9621** | [0.9500, 0.9743] | **0.9470** | 7.9% | 4.8% |
+| **Biological Rule Baseline** (OOF, carbapenemase rule) | 3,702 | — | — | — | 4.6% | 36.1% |
 
 > **Note on Biological Rule Baseline**: The rule (predict Resistant if any carbapenemase gene detected) was applied to the full ST-blocked OOF set (n = 3,702). VME = 4.6% (66/1,449 resistant isolates lacking carbapenemases); ME = 36.1%. The `Auditoria_Final_Armonizada.xlsx` file covers a separate, earlier Zenodo-derived subset of 854 isolates (355 resistant) with full mechanism annotation.
 
@@ -131,7 +136,7 @@ python scripts/test_bootstrap.py
 ## Data Availability & Model Weights
 
 - **Processed Data**: All metadata, manifests, ST labels, and out-of-fold predictions required to reproduce the paper's analytical findings are included directly in `data/` and `results/`.
-- **Raw Sequence Data**: Raw genomic assemblies can be downloaded directly from [BV-BRC](https://www.bv-brc.org/) using the accessions listed in `data/cepasv2.xlsx` and `data/dataset_manifest_colab.csv`. RGI (v6.0.3) was executed against the CARD database (v4.0.1 — *⚠️ verify: "v4.0.122" may be a paste artifact joining version "4.0.1" with citation "[22]"; confirm with `rgi database --version` in the original pipeline environment*).
+- **Raw Sequence Data**: Raw genomic assemblies can be downloaded directly from [BV-BRC](https://www.bv-brc.org/) using the accessions listed in `data/cepasv2.xlsx` and `data/dataset_manifest_colab.csv`. RGI (v6.0.3) was executed against the CARD database (v4.0.1).
 - **Pretrained Foundation Model**: The nucleotide embedding backbone uses `InstaDeepAI/NTV3_100M_post` available via Hugging Face.
 - **Trained Model Weights**: Trained PyTorch checkpoints (`modelo_MIL_v5.1_best_auc.pth`, ~1.3 GB) exceed standard GitHub repository limits (< 100 MB). Checkpoints are deposited on Zenodo [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22753637.svg)](https://doi.org/10.5281/zenodo.22753637) and can be placed in `models/` for full inference reproduction.
 
@@ -142,7 +147,7 @@ python scripts/test_bootstrap.py
 - **Adolfo Morales Tena** <sup>1</sup> — Independent Researcher
 - **Hanqun Cao** <sup>2</sup> — Machine Biology Group, University of Pennsylvania
 - **Cesar de la Fuente-Nunez** <sup>2</sup> — Machine Biology Group, University of Pennsylvania *(corresponding author)*
-- **Carlos Oscar Sorzano** <sup>3</sup> — Biocomputing Unit, Centro Nacional de Biotecnología (CNB-CSIC), Madrid, Spain
+- **Carlos Oscar S. Sorzano** <sup>3</sup> — Biocomputing Unit, Centro Nacional de Biotecnología (CNB-CSIC), Madrid, Spain
 
 <sup>1</sup> Independent Researcher  
 <sup>2</sup> Machine Biology Group, Departments of Psychiatry and Microbiology, Institute for Biomedical Informatics, Institute for Translational Medicine and Therapeutics, Perelman School of Medicine, University of Pennsylvania, Philadelphia, PA 19104, USA; Departments of Bioengineering and Chemical and Biomolecular Engineering, School of Engineering and Applied Science, University of Pennsylvania, Philadelphia, PA, USA; Department of Chemistry, School of Arts and Sciences, University of Pennsylvania, Philadelphia, PA, USA; Penn Institute for Computational Science, University of Pennsylvania, Philadelphia, PA, USA.  
