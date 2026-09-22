@@ -16,6 +16,7 @@ env/
 *.pt
 *.bin
 *.ckpt
+*.pkl
 
 # Raw massive sequence data
 data/raw_rgi/
