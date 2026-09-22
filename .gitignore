@@ -40,7 +40,9 @@ secrets.json
 !results/figures/*
 !data/*.csv
 !data/*.xlsx
-# Never publish internal audit files
-data/Auditoria_Final_Armonizada.xlsx
 # Keep the placeholder for models/ directory
 !models/.gitkeep
+
+# Local Drive & Zenodo upload scripts with secrets
+upload_to_zenodo*.ipynb
+download_from_drive*.ipynb
