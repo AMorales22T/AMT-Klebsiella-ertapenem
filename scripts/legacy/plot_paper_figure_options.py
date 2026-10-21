@@ -160,9 +160,11 @@ def generate_figure(oof, rs, option, out_path):
 
 if __name__ == "__main__":
     from pathlib import Path
-    BASE_DIR = Path(__file__).resolve().parent.parent
+    BASE_DIR = Path(__file__).resolve().parent
+    while not (BASE_DIR / ".git").exists() and BASE_DIR != BASE_DIR.parent:
+        BASE_DIR = BASE_DIR.parent
     RESULTS_DIR = BASE_DIR / "results"
-    FIGURES_DIR = RESULTS_DIR / "figures"
+    FIGURES_DIR = RESULTS_DIR / "figures" / "legacy"
     FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 
     oof = pd.read_csv(RESULTS_DIR / "oof_predictions_pooled.csv")

@@ -17,7 +17,10 @@ from pathlib import Path
 from scipy import stats as scipy_stats
 
 # ── Output ───────────────────────────────────────────────────────────
-OUT = Path(__file__).resolve().parent.parent / "results" / "figures"
+ROOT = Path(__file__).resolve().parent
+while not (ROOT / ".git").exists() and ROOT != ROOT.parent:
+    ROOT = ROOT.parent
+OUT = ROOT / "results" / "figures" / "legacy"
 OUT.mkdir(parents=True, exist_ok=True)
 
 # ══════════════════════════════════════════════════════════════════════
@@ -284,6 +287,10 @@ def make_figure():
         path = OUT / f"Figure_AUC_Comparison.{fmt}"
         fig.savefig(path, bbox_inches="tight", pad_inches=0.15,
                     facecolor=BG, dpi=300)
+        res_legacy = ROOT / "results" / "legacy" / f"Figure_AUC_Comparison.{fmt}"
+        res_legacy.parent.mkdir(parents=True, exist_ok=True)
+        import shutil
+        shutil.copy2(path, res_legacy)
         print(f"  [OK] {path.name}")
     plt.close(fig)
 

@@ -37,12 +37,19 @@ secrets.json
 # Whitelist required scientific data & figures
 !results/oof_predictions_pooled.csv
 !results/random_split_predictions.csv
-!results/figures/
-!results/figures/*
+!results/new/
+!results/new/*
+!results/legacy/
+!results/legacy/*
+!results/supplementary/
+!results/supplementary/*
 !data/*.csv
 !data/*.xlsx
 # Keep the placeholder for models/ directory
 !models/.gitkeep
+
+# Internal audit and notes (do not commit)
+DATOS_REALES_FIGURA_4_Y_5.md
 
 # Local Drive & Zenodo upload scripts with secrets
 upload_to_zenodo*.ipynb

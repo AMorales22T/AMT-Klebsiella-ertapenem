@@ -2,41 +2,95 @@
 
 All scripts in this directory are standalone and use relative paths to reproduce tables, statistical tests, and figures directly from the repository data.
 
-## Execution
+Figure scripts are cleanly partitioned into **`scripts/new/`** (active Nature Portfolio main figures), **`scripts/supplementary/`** (supplementary figures suite), and **`scripts/legacy/`** (historical reference code).
 
-Ensure dependencies are installed (`pip install -r requirements.txt`), then run:
+---
 
-### 1. Primary Statistical Metrics (`compute_stats.py`)
+## Directory Organization
+
+```
+scripts/
+├── new/                             # Current Nature Portfolio publication figures (Figures 1–6)
+│   ├── refine_figure1.py            # Generates Figure 1 (Framework & resistome architecture)
+│   ├── plot_paper_figure2.py        # Generates Figure 2 (ROC curves & DeLong validation bars)
+│   ├── plot_roc_error_analysis.py   # Generates Outcome probability distribution & ROC comparison
+│   ├── plot_paper_figure3.py        # Generates Figure 3 (SHAP global beeswarm attribution)
+│   ├── plot_paper_figure4_ig.py     # Generates Figure 4 (blaKPC-2 Integrated Gradients profile)
+│   ├── plot_paper_figure5_logo.py   # Generates Figure 5 (LOGO sensitivity & top 20 driver genes)
+│   └── plot_paper_figure6_pr_calibration.py # Generates Figure 6 (PR curve & calibration diagram)
+├── supplementary/                   # Supplementary publication figures suite (Figures S1–S5)
+│   └── plot_supplementary_figures.py# Generates Supplementary Figures S1 through S5
+├── legacy/                          # Historical reference scripts
+│   ├── figure_auc_comparison.py     # Original clonal leakage comparison script
+│   ├── plot_paper_figure_options.py # Original draft figure options (Option A & B)
+│   ├── generate_figures.py          # Unified historical script
+│   ├── generate_shap_activation_fig4.py
+│   └── ig_kpc2_plots.py
+├── compute_stats.py                 # Primary statistical metrics & Table 1 calculations
+├── run_mcnemar.py                   # McNemar statistical hypothesis tests (ML vs. rule)
+└── test_bootstrap.py                # ST-level cluster bootstrap resampling tests
+```
+
+---
+
+## Execution Guide
+
+### 1. Generating Nature Portfolio Publication Figures (`scripts/new/`)
+
 ```bash
+# Figure 1: Architecture & biological resistome diagram
+python scripts/new/refine_figure1.py
+
+# Figure 2: ROC curves & clonal inflation drop
+python scripts/new/plot_paper_figure2.py
+
+# Validation Benchmark: Outcome probability distribution & ROC comparison
+python scripts/new/plot_roc_error_analysis.py
+
+# Figure 3: SHAP global feature attributions
+python scripts/new/plot_paper_figure3.py
+
+# Figure 4: Integrated Gradients blaKPC-2 CDS sequence attribution
+python scripts/new/plot_paper_figure4_ig.py
+
+# Figure 5: Leave-One-Gene-Out (LOGO) sensitivity & top 20 driver genes
+python scripts/new/plot_paper_figure5_logo.py
+
+# Figure 6: Precision–Recall curve & model calibration analysis
+python scripts/new/plot_paper_figure6_pr_calibration.py
+```
+*Outputs are saved directly to `results/new/`.*
+
+---
+
+### 2. Generating Supplementary Figures (`scripts/supplementary/`)
+
+```bash
+# Supplementary Figures S1–S5: Threshold sweeps, attention, error profiles, cohort flow, UMAP
+python scripts/supplementary/plot_supplementary_figures.py
+```
+*Outputs are saved directly to `results/supplementary/`.*
+
+---
+
+### 3. Primary Statistical Metrics & Hypothesis Tests
+
+```bash
+# Primary metrics (ROC-AUC, DeLong 95% CIs, VME, ME, paired tests)
 python scripts/compute_stats.py
-```
-- Computes ROC-AUC and DeLong 95% confidence intervals for:
-  - ST-Blocked CV (MIL+XGBoost): `AUC = 0.7981 (95% CI: [0.7837, 0.8125])`
-  - ST-Blocked CV (MIL-only): `AUC = 0.8111 (95% CI: [0.7972, 0.8250])`
-  - Random Split (with leakage): `AUC = 0.9621 (95% CI: [0.9500, 0.9743])`
-- Computes paired DeLong test between MIL+XGBoost vs MIL-only (ΔAUC = -0.0130, p = 0.0059).
-- Computes confusion matrix, sensitivity, specificity, VME (53.59%), and ME (12.29%) with Clopper-Pearson exact binomial confidence intervals.
 
-### 2. Main Clonal Leakage Figure (`figure_auc_comparison.py`)
-```bash
-python scripts/figure_auc_comparison.py
-```
-- Reproduces `results/figures/Figure_AUC_Comparison.png` and `.pdf` comparing Random Split vs. per-fold ST-blocked CV with fold-level bootstrap CI and one-sided t-test (p = 0.0014).
-
-### 3. ROC Curves & Baseline Comparison (`plot_paper_figure_options.py`)
-```bash
-python scripts/plot_paper_figure_options.py
-```
-- Generates `results/figures/Figure_AUC_OptionA_Subset.png` (evaluating against the biological rule baseline on the 487-isolate subset) and `Figure_AUC_OptionB_Full.png` (full OOF vector).
-
-### 4. McNemar Statistical Test (`run_mcnemar.py`)
-```bash
+# McNemar 2x2 contingency table test (ML vs. biological carbapenemase rule)
 python scripts/run_mcnemar.py
-```
-- Builds 2x2 contingency tables comparing the Machine Learning predictions vs. Carbapenemase biological rule baseline and evaluates statistical significance with exact binomial McNemar test.
 
-### 5. Cluster Bootstrap Hypothesis Test (`test_bootstrap.py`)
-```bash
+# Cluster bootstrap hypothesis test across 405 Sequence Types (B = 1,000 iterations)
 python scripts/test_bootstrap.py
 ```
-- Performs cluster-based bootstrap resampling across the 405 Sequence Type (ST) clusters (B = 1,000 iterations) to assess statistical significance while accounting for clonal correlation.
+
+---
+
+### 3. Historical / Legacy Figures (`scripts/legacy/`)
+
+```bash
+# Original clonal leakage comparison
+python scripts/legacy/figure_auc_comparison.py
+```

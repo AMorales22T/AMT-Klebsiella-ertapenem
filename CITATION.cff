@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use this code, please cite the associated paper."
 type: software
-title: "Lineage-aware genomic learning exposes clonal inflation in ertapenem resistance prediction"
+title: "Lineage-aware evaluation of genomic learning for ertapenem resistance prediction"
 
 # TODO: Add ORCIDs if available
 authors:
@@ -29,7 +29,7 @@ url: "https://github.com/AMorales22T/AMT-Klebsiella-ertapenem"
 # TODO: Update with the actual journal reference once accepted.
 preferred-citation:
   type: article
-  title: "Lineage-aware genomic learning exposes clonal inflation in ertapenem resistance prediction"
+  title: "Lineage-aware evaluation of genomic learning for ertapenem resistance prediction"
   authors:
     - family-names: "Morales Tena"
       given-names: "Adolfo"
