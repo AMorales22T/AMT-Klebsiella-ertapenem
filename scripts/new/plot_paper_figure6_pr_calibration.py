@@ -54,20 +54,20 @@ def make_figure():
     brier = brier_score_loss(y_true, y_score)
     prevalence = y_true.mean()
 
-    # ── 2. Nature typography ──────────────────────────────────────────
+    # ── 2. Nature typography (enlarged for publication) ───────────────
     matplotlib.rcParams.update({
         "font.family":        "sans-serif",
         "font.sans-serif":    ["Arial", "Helvetica", "DejaVu Sans"],
-        "font.size":          8.0,
-        "axes.labelsize":     8.0,
-        "xtick.labelsize":    7.0,
-        "ytick.labelsize":    7.0,
-        "legend.fontsize":    7.0,
-        "axes.linewidth":     0.6,
-        "xtick.major.width":  0.6,
-        "ytick.major.width":  0.6,
-        "xtick.major.size":   3.0,
-        "ytick.major.size":   3.0,
+        "font.size":          9.5,
+        "axes.labelsize":     10.0,
+        "xtick.labelsize":    8.5,
+        "ytick.labelsize":    8.5,
+        "legend.fontsize":    8.5,
+        "axes.linewidth":     0.7,
+        "xtick.major.width":  0.7,
+        "ytick.major.width":  0.7,
+        "xtick.major.size":   3.2,
+        "ytick.major.size":   3.2,
         "xtick.direction":    "out",
         "ytick.direction":    "out",
         "pdf.fonttype":       42,
@@ -85,7 +85,7 @@ def make_figure():
     # ── 3. Canvas ─────────────────────────────────────────────────────
     fig, (ax_pr, ax_cal) = plt.subplots(
         1, 2,
-        figsize=(8.5, 3.8),
+        figsize=(8.8, 3.9),
         dpi=300,
         facecolor="#ffffff"
     )
@@ -119,7 +119,7 @@ def make_figure():
     # Panel label
     ax_pr.text(-0.16, 1.06, "a",
                transform=ax_pr.transAxes,
-               fontsize=10, fontweight="bold", color="#000000",
+               fontsize=12, fontweight="bold", color="#000000",
                va="bottom", ha="left")
 
     # ══════════════════════════════════════════════════════════════════
@@ -127,13 +127,13 @@ def make_figure():
     # ══════════════════════════════════════════════════════════════════
     ax_cal.plot(
         prob_pred, prob_true,
-        marker="o", markersize=4.5, markeredgewidth=0.5, markeredgecolor="#7f1d1d",
-        color=COL_CORAL, lw=1.4,
+        marker="o", markersize=5.0, markeredgewidth=0.5, markeredgecolor="#7f1d1d",
+        color=COL_CORAL, lw=1.5,
         label=f"MIL v5.3 (Brier = {brier:.4f})"
     )
     ax_cal.plot(
         [0, 1], [0, 1],
-        color=COL_GRAY, linestyle=(0, (4, 3)), lw=0.9,
+        color=COL_GRAY, linestyle=(0, (4, 3)), lw=1.0,
         label="Perfect calibration"
     )
 
@@ -152,11 +152,11 @@ def make_figure():
     # Panel label
     ax_cal.text(-0.16, 1.06, "b",
                 transform=ax_cal.transAxes,
-                fontsize=10, fontweight="bold", color="#000000",
+                fontsize=12, fontweight="bold", color="#000000",
                 va="bottom", ha="left")
 
     # ── 4. Save ───────────────────────────────────────────────────────
-    plt.subplots_adjust(left=0.09, right=0.96, bottom=0.15, top=0.90, wspace=0.28)
+    plt.subplots_adjust(left=0.09, right=0.96, bottom=0.15, top=0.90, wspace=0.30)
 
     fig.savefig(OUT / "Figure6_updated.png",
                 dpi=300, bbox_inches="tight", pad_inches=0.08,

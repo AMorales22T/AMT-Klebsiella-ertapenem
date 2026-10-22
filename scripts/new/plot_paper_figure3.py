@@ -109,13 +109,13 @@ def make_figure():
     for i in range(cb_h):
         frac = 1.0 - (i / float(cb_h))
         c = (np.array(cmap_npg(frac)[:3]) * 255.0).astype(np.uint8)
-        arr[cb_y0 + i, 904:912] = c
+        arr[cb_y0 + i, 892:900] = c
 
     # Subtle 1px neutral border around colorbar
-    arr[cb_y0:cb_y1, 903] = 180
-    arr[cb_y0:cb_y1, 912] = 180
-    arr[cb_y0, 903:913] = 180
-    arr[cb_y1 - 1, 903:913] = 180
+    arr[cb_y0:cb_y1, 891] = 180
+    arr[cb_y0:cb_y1, 900] = 180
+    arr[cb_y0, 891:901] = 180
+    arr[cb_y1 - 1, 891:901] = 180
 
     # Convert to PIL for sharp typography
     cleaned_img = Image.fromarray(arr)
@@ -133,7 +133,7 @@ def make_figure():
     font_a = None
     for fp in font_paths_bold:
         try:
-            font_a = ImageFont.truetype(fp, 28)
+            font_a = ImageFont.truetype(fp, 32)
             break
         except Exception:
             pass
@@ -143,7 +143,7 @@ def make_figure():
     font_label = None
     for fp in font_paths_reg:
         try:
-            font_label = ImageFont.truetype(fp, 13)
+            font_label = ImageFont.truetype(fp, 16)
             break
         except Exception:
             pass
@@ -151,20 +151,20 @@ def make_figure():
         font_label = ImageFont.load_default()
 
     # Nature panel label 'a'
-    draw.text((22, 28), "a", fill="#000000", font=font_a)
+    draw.text((22, 24), "a", fill="#000000", font=font_a)
 
     # Colorbar labels (High / Low)
-    draw.text((918, cb_y0 - 2), "High", fill="#1a1a1a", font=font_label)
-    draw.text((918, cb_y1 - 12), "Low", fill="#1a1a1a", font=font_label)
+    draw.text((908, cb_y0 - 4), "High", fill="#1a1a1a", font=font_label)
+    draw.text((908, cb_y1 - 14), "Low", fill="#1a1a1a", font=font_label)
 
     # Rotated vertical label 'Feature value'
-    txt_im = Image.new("RGBA", (200, 30), (255, 255, 255, 0))
+    txt_im = Image.new("RGBA", (220, 35), (255, 255, 255, 0))
     txt_draw = ImageDraw.Draw(txt_im)
     txt_draw.text((0, 0), "Feature value", fill="#1a1a1a", font=font_label)
     txt_rot = txt_im.rotate(270, expand=True)
 
     paste_y = (cb_y0 + cb_y1) // 2 - txt_rot.height // 2
-    cleaned_img.paste(txt_rot, (945, paste_y), txt_rot)
+    cleaned_img.paste(txt_rot, (938, paste_y), txt_rot)
 
     # ── 6. Save PNG with Exact Original Dimensions (984 × 1222 px) ───
     cleaned_img.save(OUT / "Figure3_updated.png", dpi=(130, 130))

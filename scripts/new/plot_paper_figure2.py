@@ -82,20 +82,20 @@ def make_figure():
 
     fpr_baseline, tpr_baseline = 0.3607, 0.9544
 
-    # ── Global typography (Nature standard) ───────────────────────────
+    # ── Global typography (Nature standard, enlarged for publication) ──
     matplotlib.rcParams.update({
         "font.family":        "sans-serif",
         "font.sans-serif":    ["Arial", "Helvetica", "DejaVu Sans"],
-        "font.size":          8.0,
-        "axes.labelsize":     8.0,
-        "xtick.labelsize":    7.0,
-        "ytick.labelsize":    7.0,
-        "legend.fontsize":    7.0,
-        "axes.linewidth":     0.6,
-        "xtick.major.width":  0.6,
-        "ytick.major.width":  0.6,
-        "xtick.major.size":   3.0,
-        "ytick.major.size":   3.0,
+        "font.size":          10.0,
+        "axes.labelsize":     10.5,
+        "xtick.labelsize":    9.0,
+        "ytick.labelsize":    9.0,
+        "legend.fontsize":    8.8,
+        "axes.linewidth":     0.7,
+        "xtick.major.width":  0.7,
+        "ytick.major.width":  0.7,
+        "xtick.major.size":   3.5,
+        "ytick.major.size":   3.5,
         "xtick.direction":    "out",
         "ytick.direction":    "out",
         "pdf.fonttype":       42,
@@ -156,9 +156,9 @@ def make_figure():
     )
 
     # Panel label
-    ax_roc.text(-0.14, 1.07, "a",
+    ax_roc.text(-0.12, 1.05, "a",
                 transform=ax_roc.transAxes,
-                fontsize=10, fontweight="bold", color="#000000",
+                fontsize=12, fontweight="bold", color="#000000",
                 va="bottom", ha="left")
 
     # ══════════════════════════════════════════════════════════════════
@@ -177,43 +177,43 @@ def make_figure():
         color=colors,
         edgecolor="none",
         alpha=1.0,
-        capsize=3.0,
-        error_kw={"ecolor": "#1e293b", "lw": 0.75, "capthick": 0.75},
+        capsize=3.5,
+        error_kw={"ecolor": "#1e293b", "lw": 0.85, "capthick": 0.85},
         zorder=3,
     )
 
-    # AUC values above error caps — small, non-bold
+    # AUC values above error caps
     for i, (val, err) in enumerate(zip(aucs, errors)):
         ax_bar.text(
-            i, val + err + 0.013,
+            i, val + err + 0.014,
             f"{val:.3f}",
             ha="center", va="bottom",
-            fontsize=7.0, color=TEXT_C, zorder=4,
+            fontsize=8.8, color=TEXT_C, zorder=4,
         )
 
     # ── ΔAUC bracket (minimal: thin bracket + one short label) ───────
     delta_auc = auc_mil - auc_rs
     pct_drop  = (delta_auc / auc_rs) * 100
 
-    y_top = max(auc_rs, auc_mil) + max(ci_rs, ci_mil) + 0.038
+    y_top = max(auc_rs, auc_mil) + max(ci_rs, ci_mil) + 0.040
     hb    = 0.010   # bracket arm height
 
     ax_bar.plot(
         [0, 0, 1, 1],
         [y_top - hb, y_top, y_top, y_top - hb],
-        color=COL_BASE, lw=0.9, zorder=5,
+        color=COL_BASE, lw=1.0, zorder=5,
     )
     ax_bar.text(
-        0.5, y_top + 0.006,
+        0.5, y_top + 0.007,
         f"ΔAUC = {delta_auc:.3f} ({pct_drop:.1f}%)",
         ha="center", va="bottom",
-        fontsize=6.8, color=COL_BASE, zorder=5,
+        fontsize=8.5, color=COL_BASE, zorder=5,
     )
 
     ax_bar.set_xticks(x_pos)
     ax_bar.set_xticklabels(models, color=TEXT_C, linespacing=1.2)
     ax_bar.set_ylabel("ROC-AUC", color=TEXT_C)
-    ax_bar.set_ylim(0.60, 1.10)
+    ax_bar.set_ylim(0.60, 1.12)
 
     for sp in ["top", "right"]:
         ax_bar.spines[sp].set_visible(False)
@@ -221,13 +221,13 @@ def make_figure():
     ax_bar.spines["bottom"].set_color(TEXT_C)
 
     # Panel label
-    ax_bar.text(-0.14, 1.07, "b",
+    ax_bar.text(-0.12, 1.05, "b",
                 transform=ax_bar.transAxes,
-                fontsize=10, fontweight="bold", color="#000000",
+                fontsize=12, fontweight="bold", color="#000000",
                 va="bottom", ha="left")
 
     # ── Save ──────────────────────────────────────────────────────────
-    plt.subplots_adjust(left=0.08, right=0.96, bottom=0.14, top=0.90, wspace=0.30)
+    plt.subplots_adjust(left=0.08, right=0.96, bottom=0.15, top=0.90, wspace=0.30)
 
     fig.savefig(OUT / "Figure2_updated.png",
                 dpi=300,

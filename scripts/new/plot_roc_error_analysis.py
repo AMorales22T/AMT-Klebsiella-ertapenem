@@ -58,20 +58,20 @@ def make_figure():
 
     df_pred = pd.DataFrame(df_pred)
 
-    # ── 2. Nature Portfolio typography ────────────────────────────────
+    # ── 2. Nature Portfolio typography (enlarged for publication) ─────
     matplotlib.rcParams.update({
         "font.family":        "sans-serif",
         "font.sans-serif":    ["Arial", "Helvetica", "DejaVu Sans"],
-        "font.size":          8.5,
-        "axes.labelsize":     8.5,
-        "xtick.labelsize":    7.5,
-        "ytick.labelsize":    7.5,
-        "legend.fontsize":    7.5,
-        "axes.linewidth":     0.6,
-        "xtick.major.width":  0.6,
-        "ytick.major.width":  0.6,
-        "xtick.major.size":   3.0,
-        "ytick.major.size":   3.0,
+        "font.size":          10.0,
+        "axes.labelsize":     10.5,
+        "xtick.labelsize":    9.0,
+        "ytick.labelsize":    9.0,
+        "legend.fontsize":    8.8,
+        "axes.linewidth":     0.7,
+        "xtick.major.width":  0.7,
+        "ytick.major.width":  0.7,
+        "xtick.major.size":   3.5,
+        "ytick.major.size":   3.5,
         "xtick.direction":    "out",
         "ytick.direction":    "out",
         "pdf.fonttype":       42,
@@ -110,15 +110,15 @@ def make_figure():
 
     sns.boxplot(
         data=df_pred, x="Outcome", y="Probability",
-        order=order, palette=palette, ax=ax_box,
-        width=0.48, linewidth=0.75,
+        order=order, palette=palette, hue="Outcome", legend=False, ax=ax_box,
+        width=0.48, linewidth=0.8,
         boxprops=dict(alpha=0.88),
-        fliersize=2.5,
+        fliersize=3.0,
         zorder=2
     )
 
-    ax_box.axhline(0.50, linestyle=(0, (4, 3)), color=C_GRAY, lw=0.9, zorder=1, label="Default threshold (0.50)")
-    ax_box.set_ylabel("Predicted probability of resistance — XGBoost v5.3", color=TEXT_C, labelpad=6)
+    ax_box.axhline(0.50, linestyle=(0, (4, 3)), color=C_GRAY, lw=1.0, zorder=1, label="Default threshold (0.50)")
+    ax_box.set_ylabel("Predicted probability of resistance — XGBoost v5.3", color=TEXT_C, labelpad=8)
     ax_box.set_xlabel("")
     ax_box.set_ylim(-0.02, 1.02)
 
@@ -132,10 +132,10 @@ def make_figure():
     # Subplot header & panel label
     ax_box.text(0.5, 1.02, "Probability Distribution by Classification Outcome",
                 transform=ax_box.transAxes, ha="center", va="bottom",
-                fontsize=9.5, fontweight="bold", color=TEXT_C)
+                fontsize=11.0, fontweight="bold", color=TEXT_C)
     ax_box.text(-0.12, 1.06, "a",
                 transform=ax_box.transAxes,
-                fontsize=11, fontweight="bold", color="#000000",
+                fontsize=13, fontweight="bold", color="#000000",
                 va="bottom", ha="left")
 
     # ══════════════════════════════════════════════════════════════════
@@ -151,29 +151,29 @@ def make_figure():
     # TF-IDF k-mers + RF
     fpr_rf = np.linspace(0, 1, 100)
     tpr_rf = np.power(fpr_rf, 0.16) * 0.98 + fpr_rf * 0.02
-    ax_roc.plot(fpr_rf, tpr_rf, lw=1.2, linestyle="--", color=C_GREEN,
+    ax_roc.plot(fpr_rf, tpr_rf, lw=1.3, linestyle="--", color=C_GREEN,
                 label="TF-IDF k-mers + RF (AUC = 0.9544)")
 
     # TF-IDF k-mers + XGBoost
     fpr_xgb = np.linspace(0, 1, 100)
     tpr_xgb = np.power(fpr_xgb, 0.18) * 0.97 + fpr_xgb * 0.03
-    ax_roc.plot(fpr_xgb, tpr_xgb, lw=1.2, linestyle="-.", color=C_AMBER,
+    ax_roc.plot(fpr_xgb, tpr_xgb, lw=1.3, linestyle="-.", color=C_AMBER,
                 label="TF-IDF k-mers + XGBoost (AUC = 0.9492)")
 
     # NTv3 Mean + Improved MLP
     fpr_mlp = np.linspace(0, 1, 100)
     tpr_mlp = np.power(fpr_mlp, 0.32) * 0.92 + fpr_mlp * 0.08
-    ax_roc.plot(fpr_mlp, tpr_mlp, lw=1.2, linestyle=":", color=C_PURP,
+    ax_roc.plot(fpr_mlp, tpr_mlp, lw=1.3, linestyle=":", color=C_PURP,
                 label="NTv3 Mean + Improved MLP (AUC = 0.8988)")
 
     # Random Guess
-    ax_roc.plot([0, 1], [0, 1], linestyle=(0, (4, 3)), color=C_GRAY, lw=0.9,
+    ax_roc.plot([0, 1], [0, 1], linestyle=(0, (4, 3)), color=C_GRAY, lw=1.0,
                 label="Random guess (AUC = 0.5000)")
 
     # Biological Rule Baseline
     baseline_fpr = 0.3607
     baseline_tpr = 0.9544
-    ax_roc.plot(baseline_fpr, baseline_tpr, marker="*", markersize=10, color=C_CORAL,
+    ax_roc.plot(baseline_fpr, baseline_tpr, marker="*", markersize=11, color=C_CORAL,
                 markeredgecolor="#7f1d1d", markeredgewidth=0.5,
                 linestyle="none", label="Biological rule baseline (Carbapenemase rule)")
 
@@ -181,9 +181,9 @@ def make_figure():
         "Balanced Accuracy = 0.796",
         xy=(baseline_fpr, baseline_tpr),
         xytext=(baseline_fpr + 0.03, baseline_tpr - 0.12),
-        fontsize=7.2, color=C_CORAL,
-        bbox=dict(boxstyle="round,pad=0.25", fc="white", ec=C_CORAL, lw=0.8, alpha=0.9),
-        arrowprops=dict(arrowstyle="->", color=C_CORAL, lw=0.8, connectionstyle="arc3,rad=0.1")
+        fontsize=8.5, color=C_CORAL,
+        bbox=dict(boxstyle="round,pad=0.25", fc="white", ec=C_CORAL, lw=0.9, alpha=0.9),
+        arrowprops=dict(arrowstyle="->", color=C_CORAL, lw=0.9, connectionstyle="arc3,rad=0.1")
     )
 
     ax_roc.set_xlabel("False positive rate (1 − Specificity)", color=TEXT_C)
@@ -201,14 +201,14 @@ def make_figure():
     # Subplot header & panel label
     ax_roc.text(0.5, 1.02, "Receiver Operating Characteristic (ROC) Comparison",
                 transform=ax_roc.transAxes, ha="center", va="bottom",
-                fontsize=9.5, fontweight="bold", color=TEXT_C)
+                fontsize=11.0, fontweight="bold", color=TEXT_C)
     ax_roc.text(-0.12, 1.06, "b",
                 transform=ax_roc.transAxes,
-                fontsize=11, fontweight="bold", color="#000000",
+                fontsize=13, fontweight="bold", color="#000000",
                 va="bottom", ha="left")
 
     # ── 4. Save ───────────────────────────────────────────────────────
-    plt.subplots_adjust(left=0.08, right=0.96, bottom=0.12, top=0.90, wspace=0.24)
+    plt.subplots_adjust(left=0.08, right=0.96, bottom=0.14, top=0.90, wspace=0.26)
 
     fig.savefig(OUT / "Figure_ROC_Error_Analysis.png", dpi=300, facecolor="#ffffff")
     fig.savefig(OUT / "Figure_ROC_Error_Analysis.pdf", facecolor="#ffffff")

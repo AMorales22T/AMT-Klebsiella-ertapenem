@@ -41,22 +41,20 @@ OUT.mkdir(parents=True, exist_ok=True)
 
 
 def make_figure():
-    # ── 1. Nature typography (scaled for large canvas) ────────────────
-    #    At 300 DPI / 20-inch width, 1 pt in the figure ≈ 0.33mm on screen
-    #    but will be reduced when placed in a manuscript. Scale appropriately.
+    # ── 1. Nature typography (scaled for large canvas, enlarged for publication) ──
     matplotlib.rcParams.update({
         "font.family":     "sans-serif",
         "font.sans-serif": ["Arial", "Helvetica", "DejaVu Sans"],
-        "font.size":       9.0,
-        "axes.labelsize":  9.0,
-        "xtick.labelsize": 8.0,
-        "ytick.labelsize": 8.0,
-        "legend.fontsize": 8.0,
-        "axes.linewidth":  0.6,
-        "xtick.major.width": 0.6,
-        "ytick.major.width": 0.6,
-        "xtick.major.size":  3.0,
-        "ytick.major.size":  3.0,
+        "font.size":       12.5,
+        "axes.labelsize":  14.0,
+        "xtick.labelsize": 12.0,
+        "ytick.labelsize": 12.0,
+        "legend.fontsize": 12.0,
+        "axes.linewidth":  0.8,
+        "xtick.major.width": 0.8,
+        "ytick.major.width": 0.8,
+        "xtick.major.size":  4.0,
+        "ytick.major.size":  4.0,
         "xtick.direction": "out",
         "ytick.direction": "out",
         "pdf.fonttype":    42,
@@ -68,9 +66,9 @@ def make_figure():
     # ── 2. Canvas (dimensions preserved: 5996 × 2511 px @ 300 DPI) ───
     fig = plt.figure(figsize=(5996 / 300.0, 2511 / 300.0), dpi=300, facecolor="#ffffff")
 
-    # Panel placement: tighter gap than v1 (was 0.075/0.620; now 0.075/0.560)
-    ax0 = fig.add_axes([0.075, 0.14, 0.240, 0.76])  # panel a: violin
-    ax1 = fig.add_axes([0.560, 0.14, 0.400, 0.76])  # panel b: gene ranking
+    # Panel placement: generous clearance between panel a and gene labels
+    ax0 = fig.add_axes([0.075, 0.14, 0.205, 0.76])  # panel a: violin
+    ax1 = fig.add_axes([0.565, 0.14, 0.395, 0.76])  # panel b: gene ranking
 
     # ── 3. Real Empirical LOGO ΔP(R) distributions & Data Loading ─────
     real_csv_candidates = [
@@ -165,19 +163,19 @@ def make_figure():
 
     for sp in ["top", "right"]:
         ax0.spines[sp].set_visible(False)
-    ax0.spines["left"].set_linewidth(0.6)
-    ax0.spines["bottom"].set_linewidth(0.6)
+    ax0.spines["left"].set_linewidth(0.8)
+    ax0.spines["bottom"].set_linewidth(0.8)
     ax0.spines["left"].set_color("#1a1a1a")
     ax0.spines["bottom"].set_color("#1a1a1a")
-    ax0.tick_params(direction="out", length=3.0, width=0.6, labelsize=8.0, colors="#1a1a1a")
+    ax0.tick_params(direction="out", length=4.0, width=0.8, labelsize=12.0, colors="#1a1a1a")
 
     ax0.set_ylabel(r"Change in predicted probability ($\Delta P(\mathrm{R})$)",
-                   fontsize=9.0, color="#1a1a1a", labelpad=6)
-    ax0.set_xlabel("Isolate phenotypic class", fontsize=9.0, color="#1a1a1a", labelpad=6)
+                   fontsize=14.0, color="#1a1a1a", labelpad=8)
+    ax0.set_xlabel("Isolate phenotypic class", fontsize=14.0, color="#1a1a1a", labelpad=8)
     ax0.grid(False)
 
     # Panel label 'a'
-    ax0.text(-0.16, 1.04, "a", transform=ax0.transAxes, fontsize=14,
+    ax0.text(-0.16, 1.04, "a", transform=ax0.transAxes, fontsize=22,
              fontweight="bold", va="bottom", ha="left", clip_on=False)
 
     # ── 5. Panel b: Top 20 Resistance-Driving Genes ───────────────────
@@ -192,11 +190,12 @@ def make_figure():
         mean_deltas,
         color=bar_colors,
         edgecolor="none",
-        height=0.60,   # slimmer bars (was 0.68)
+        height=0.62,
         zorder=2,
     )
     ax1.set_yticks(range(len(gene_labels)))
-    ax1.set_yticklabels(gene_labels, fontsize=9.0, color="#1a1a1a")
+    ax1.set_yticklabels(gene_labels, fontsize=12.0, color="#1a1a1a")
+    ax1.tick_params(direction="out", length=4.0, width=0.8, labelsize=12.0, colors="#1a1a1a")
     ax1.invert_yaxis()
 
     # Despine
@@ -207,14 +206,14 @@ def make_figure():
 
     ax1.set_xlabel(
         r"Mean change in predicted probability ($\Delta P(\mathrm{R})$)",
-        color="#1a1a1a", labelpad=6,
+        fontsize=14.0, color="#1a1a1a", labelpad=8,
     )
     ax1.set_ylabel("")
 
     # Panel label 'b' — placed left of gene labels
-    ax1.text(-0.54, 1.04, "b",
+    ax1.text(-0.52, 1.04, "b",
              transform=ax1.transAxes,
-             fontsize=14, fontweight="bold",
+             fontsize=22, fontweight="bold",
              va="bottom", ha="left", clip_on=False)
 
     # ── 6. Save (Exact 5996 × 2511 px without tight cropping) ─────────

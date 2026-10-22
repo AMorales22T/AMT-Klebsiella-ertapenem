@@ -149,7 +149,12 @@ def make_figure():
     # ═══════════════════════════════════════════════════════════════
     # STAGE BACKGROUNDS
     # ═══════════════════════════════════════════════════════════════
-    stage_bg(0.020, 0.205, 0.200, 0.755,
+    # Shift panel a by dy = -0.185 so that top aligns with b and c (0.775),
+    # badge a aligns with badge b and c (0.737),
+    # and bottom aligns with panel d (0.020).
+    dy = -0.185
+
+    stage_bg(0.020, 0.205 + dy, 0.200, 0.755,
              "a", "INPUT PREPROCESSING", S1, S1_BG)
 
     stage_bg(0.250, 0.280, 0.295, 0.495,
@@ -175,7 +180,7 @@ def make_figure():
     ins_w_in, ins_h_in = 2.30, 0.80
     ins_w = ins_w_in / ax_w_in
     ins_h = ins_h_in * YMAX / ax_h_in
-    ia = ax.inset_axes([cx - ins_w / 2, 0.790, ins_w, ins_h], transform=ax.transData)
+    ia = ax.inset_axes([cx - ins_w / 2, 0.790 + dy, ins_w, ins_h], transform=ax.transData)
     ia.set_xlim(0, ins_w_in)
     ia.set_ylim(0, ins_h_in)
     ia.axis("off")
@@ -235,16 +240,16 @@ def make_figure():
             ha="center", va="center", zorder=7)
 
     # Caption under the illustration
-    ax.text(cx, 0.780, "Klebsiella pneumoniae", fontsize=8.6, fontweight="bold",
+    ax.text(cx, 0.780 + dy, "Klebsiella pneumoniae", fontsize=8.6, fontweight="bold",
             fontstyle="italic", ha="center", va="center", color=TEXT, zorder=4)
-    ax.text(cx, 0.768, "Clinical AMR isolates (BV-BRC / EuSCAPE)",
+    ax.text(cx, 0.768 + dy, "Clinical AMR isolates (BV-BRC / EuSCAPE)",
             fontsize=6.4, color=MUTED, ha="center", va="top", zorder=4)
 
     # Arrow: Bacterium -> Genome Assemblies
-    arrow((cx, 0.756), (cx, 0.739))
+    arrow((cx, 0.756 + dy), (cx, 0.739 + dy))
 
     # 1.2 Visual Genome Assemblies Block (WGS Contigs & Scaffolds)
-    asmb_y = 0.655
+    asmb_y = 0.655 + dy
     asmb_h = 0.082
     box(cx - bw_card/2, asmb_y, bw_card, asmb_h, "", edge="#0284c7", fill="#f0f9ff", lw=1.0)
 
@@ -285,7 +290,7 @@ def make_figure():
     arrow((cx, asmb_y), (cx, asmb_y - 0.024))
 
     # 1.3 Lineage Partitioning Block (y: 0.558 to 0.631, h = 0.073)
-    lp_y = 0.558
+    lp_y = 0.558 + dy
     lp_h = 0.073
     box(cx - bw_card/2, lp_y, bw_card, lp_h,
         "Lineage partitioning\n(405 ST clusters)", edge=S1, fs=8.2,
@@ -296,7 +301,7 @@ def make_figure():
     arrow((cx, lp_y), (cx, lp_y - 0.024))
 
     # 1.4 CARD-RGI Annotation & Extraction (y: 0.461 to 0.534, h = 0.073)
-    rgi_y = 0.461
+    rgi_y = 0.461 + dy
     rgi_h = 0.073
     box(cx - bw_card/2, rgi_y, bw_card, rgi_h,
         "CARD-RGI resistome\nannotation", edge=S1, fs=8.2,
@@ -306,11 +311,11 @@ def make_figure():
     # Arrow: CARD-RGI -> Gene bag (TOUCHES TOP CARD EXACTLY!)
     arrow((cx, rgi_y), (cx, rgi_y - 0.024))
 
-    # 1.5 Variable Resistome Gene Bag (y: 0.230 to 0.437)
-    top_card_top = rgi_y - 0.024  # 0.437
+    # 1.5 Variable Resistome Gene Bag
+    top_card_top = rgi_y - 0.024
     card_w = 0.145
     card_h = 0.046
-    top_base_y = top_card_top - card_h  # 0.391
+    top_base_y = top_card_top - card_h
 
     n_cards = 4
     for i in range(n_cards):
@@ -332,28 +337,29 @@ def make_figure():
             fontsize=6.2, ha="center", va="center", color=MUTED, fontstyle="italic", zorder=8)
 
     # Labels below gene bag cards
-    ax.text(cx, 0.355, r"$\bf{Variable\ resistome\ bag\ } B_j = \{g_1, \dots, g_{M_j}\}$",
+    ax.text(cx, 0.355 + dy, r"$\bf{Variable\ resistome\ bag\ } B_j = \{g_1, \dots, g_{M_j}\}$",
             fontsize=7.4, ha="center", va="center", color=TEXT, zorder=4)
-    ax.text(cx, 0.337, r"Resistome profile ($M_j \in [1, 35]$ genes per isolate)",
+    ax.text(cx, 0.337 + dy, r"Resistome profile ($M_j \in [1, 35]$ genes per isolate)",
             fontsize=6.6, ha="center", va="center", color=MUTED, zorder=4)
-    ax.text(cx, 0.320, "Extracted CDS nucleotide sequences",
+    ax.text(cx, 0.320 + dy, "Extracted CDS nucleotide sequences",
             fontsize=6.3, fontstyle="italic", ha="center", va="center", color=LIGHT, zorder=4)
 
     # Container badge for Multi-Instance Learning representation
     ax.add_patch(FancyBboxPatch(
-        (cx - bw_card/2 + 0.010, 0.230), bw_card - 0.020, 0.065,
+        (cx - bw_card/2 + 0.010, 0.230 + dy), bw_card - 0.020, 0.065,
         boxstyle="round,pad=0.004,rounding_size=0.007",
         facecolor="#eff6ff", edgecolor="#93c5fd", linewidth=0.8, linestyle=":", zorder=2
     ))
-    ax.text(cx, 0.276, "Multi-Instance Learning Input",
+    ax.text(cx, 0.276 + dy, "Multi-Instance Learning Input",
             fontsize=7.2, fontweight="bold", color=S1, ha="center", va="center", zorder=4)
-    ax.text(cx, 0.258, "Unordered set of variable length",
+    ax.text(cx, 0.258 + dy, "Unordered set of variable length",
             fontsize=6.4, color=MUTED, ha="center", va="center", zorder=4)
-    ax.text(cx, 0.244, "Instances: individual resistance genes",
+    ax.text(cx, 0.244 + dy, "Instances: individual resistance genes",
             fontsize=6.2, fontstyle="italic", color=LIGHT, ha="center", va="center", zorder=4)
 
     # Heavy arrow from Gene Bag in Stage 1 into NTv3 in Stage 2
-    heavy_arrow((0.220, 0.415), (0.260, 0.575))
+    gene_bag_exit_y = top_base_y + card_h / 2
+    heavy_arrow((0.220, gene_bag_exit_y), (0.260, 0.575))
 
     # ═══════════════════════════════════════════════════════════════
     # 2. EMBEDDING & POOLING (Original Layout)

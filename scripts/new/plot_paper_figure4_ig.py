@@ -64,19 +64,19 @@ def make_figure():
             scores[start:end] += np.random.normal(loc=amp, scale=0.3, size=end - start)
         scores = np.clip(scores, 0.0, None)
 
-    # ── 2. Nature typography ──────────────────────────────────────────
+    # ── 2. Nature typography (enlarged for publication) ───────────────
     matplotlib.rcParams.update({
         "font.family":     "sans-serif",
         "font.sans-serif": ["Arial", "Helvetica", "DejaVu Sans"],
-        "font.size":       8.0,
-        "axes.labelsize":  8.0,
-        "xtick.labelsize": 7.0,
-        "ytick.labelsize": 7.0,
-        "axes.linewidth":  0.6,
-        "xtick.major.width": 0.6,
-        "ytick.major.width": 0.6,
-        "xtick.major.size":  2.5,
-        "ytick.major.size":  2.5,
+        "font.size":       9.5,
+        "axes.labelsize":  9.5,
+        "xtick.labelsize": 8.5,
+        "ytick.labelsize": 8.5,
+        "axes.linewidth":  0.7,
+        "xtick.major.width": 0.7,
+        "ytick.major.width": 0.7,
+        "xtick.major.size":  3.0,
+        "ytick.major.size":  3.0,
         "xtick.direction": "out",
         "ytick.direction": "out",
         "pdf.fonttype":    42,
@@ -104,39 +104,39 @@ def make_figure():
     ax.spines["bottom"].set_color("#1a1a1a")
 
     ax.set_xlim(0, 513)
-    ax.set_ylim(0, 5.8)
+    ax.set_ylim(0, 6.2)
     ax.set_xticks([1, 100, 200, 300, 400, 512])
     ax.set_yticks([0, 1, 2, 3, 4, 5])
 
     ax.set_xlabel(
         r"Nucleotide position in $\it{bla}_{\mathrm{KPC\text{-}2}}$ CDS (bp 1–512)",
-        color="#1a1a1a", labelpad=3,
+        color="#1a1a1a", labelpad=4,
     )
     ax.set_ylabel(
         r"Attribution score ($L_2$ norm)",
-        color="#1a1a1a", labelpad=3,
+        color="#1a1a1a", labelpad=4,
     )
 
     # ── 6. Panel label ────────────────────────────────────────────────
-    ax.text(-0.048, 1.06, "a",
+    ax.text(-0.052, 1.06, "a",
             transform=ax.transAxes,
-            fontsize=10, fontweight="bold",
+            fontsize=12, fontweight="bold",
             va="bottom", ha="left", color="#000000")
 
     # ── 7. Hotspot brackets & labels ─────────────────────────────────
     for start, end, amp, label in hotspots:
         sub_max = scores[start:end].max()
-        y_b     = sub_max + 0.24   # bracket top (tighter than v1's 0.28)
-        tick_h  = 0.08             # arm length (was 0.12)
+        y_b     = sub_max + 0.26
+        tick_h  = 0.09
 
-        ax.plot([start, end],     [y_b, y_b],         color="#333333", lw=0.65, zorder=3)
-        ax.plot([start, start],   [y_b - tick_h, y_b], color="#333333", lw=0.65, zorder=3)
-        ax.plot([end,   end],     [y_b - tick_h, y_b], color="#333333", lw=0.65, zorder=3)
+        ax.plot([start, end],     [y_b, y_b],         color="#333333", lw=0.75, zorder=3)
+        ax.plot([start, start],   [y_b - tick_h, y_b], color="#333333", lw=0.75, zorder=3)
+        ax.plot([end,   end],     [y_b - tick_h, y_b], color="#333333", lw=0.75, zorder=3)
 
         center_x = (start + end) / 2.0
-        ax.text(center_x, y_b + 0.10, label,
-                fontsize=6.5, ha="center", va="bottom",
-                color="#1a1a1a", linespacing=0.80)
+        ax.text(center_x, y_b + 0.12, label,
+                fontsize=7.8, ha="center", va="bottom",
+                color="#1a1a1a", linespacing=0.85)
 
     # ── 8. Save ───────────────────────────────────────────────────────
     fig.savefig(OUT / "Figure4_updated.png",
