@@ -283,7 +283,7 @@ def make_figure():
     ax.add_patch(Rectangle((contig_x0 + 0.030, t3_y), 0.022, 0.005, facecolor="#64748b", edgecolor="none", zorder=4))
 
     # Assembly metrics
-    ax.text(cx, asmb_y + 0.0065, "3,702 genomes | Ertapenem: 1,449 R / 2,253 S",
+    ax.text(cx, asmb_y + 0.0065, "3,702 genomes | Ertapenem: 1,448 R / 2,254 S",
             fontsize=6.2, color=MUTED, ha="center", va="center", zorder=4)
 
     # Arrow: Genome Assemblies -> Lineage Partitioning
@@ -293,8 +293,8 @@ def make_figure():
     lp_y = 0.558 + dy
     lp_h = 0.073
     box(cx - bw_card/2, lp_y, bw_card, lp_h,
-        "Lineage partitioning\n(405 ST clusters)", edge=S1, fs=8.2,
-        subtitle="ST-blocked CV (primary)\nvs Random split (comparator)",
+        "Lineage partitioning\nby Sequence Type", edge=S1, fs=8.2,
+        subtitle="ST-blocked CV (primary)\nvs Historical comparator",
         sub_fs=6.4, sub_color=MUTED)
 
     # Arrow: Lineage Partitioning -> CARD-RGI
@@ -368,7 +368,7 @@ def make_figure():
     # NTv3 block (subtitle inside)
     box(0.260, 0.550, 0.130, 0.090,
         "NTv3 foundation\nmodel", edge=S2, fs=9.2,
-        subtitle="frozen 100M backbone")
+        subtitle="end-to-end 100M encoder")
 
     # MIL encoder block (subtitle inside)
     box(0.415, 0.550, 0.130, 0.090,

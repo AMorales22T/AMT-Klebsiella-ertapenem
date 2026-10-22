@@ -117,9 +117,9 @@ def make_figure():
     ax_pr.legend(loc="lower left", frameon=False, handlelength=1.6)
 
     # Panel label
-    ax_pr.text(-0.16, 1.06, "a",
+    ax_pr.text(-0.15, 1.06, "a",
                transform=ax_pr.transAxes,
-               fontsize=12, fontweight="bold", color="#000000",
+               fontsize=14, fontweight="bold", color="#000000",
                va="bottom", ha="left")
 
     # ══════════════════════════════════════════════════════════════════
@@ -150,9 +150,9 @@ def make_figure():
     ax_cal.legend(loc="upper left", frameon=False, handlelength=1.6)
 
     # Panel label
-    ax_cal.text(-0.16, 1.06, "b",
+    ax_cal.text(-0.15, 1.06, "b",
                 transform=ax_cal.transAxes,
-                fontsize=12, fontweight="bold", color="#000000",
+                fontsize=14, fontweight="bold", color="#000000",
                 va="bottom", ha="left")
 
     # ── 4. Save ───────────────────────────────────────────────────────

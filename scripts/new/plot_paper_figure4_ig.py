@@ -43,9 +43,8 @@ def make_figure():
 
     hotspots = [
         (60,  75,  2.5, "nt 60–75\nSignal peptide"),
-        (160, 175, 4.2, "nt 160–175\nActive site Ser70"),
-        (230, 245, 3.1, "nt 230–245\nSDN motif"),
-        (380, 400, 1.8, "nt 380–400\nKTG triad"),
+        (205, 220, 4.5, "nt 205–220\nActive site Ser70"),
+        (380, 400, 3.2, "nt 380–400\nSDN loop motif"),
     ]
 
     if real_npy:

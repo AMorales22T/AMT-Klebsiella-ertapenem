@@ -107,12 +107,11 @@ def make_figure():
             np.random.laplace(loc=0.000, scale=0.004, size=400),
             np.random.exponential(scale=0.02, size=50) * -1.0  # left skew (down to -0.859)
         ])
-        # Resistant distribution: median ~0.38, long tail reaching up to max 0.965
-        sens_R = np.concatenate([
-            np.random.normal(loc=0.380, scale=0.140, size=350),
-            np.random.beta(a=5, b=2, size=100) * 0.965  # high-driver peak
-        ])
-        sens_R = np.clip(sens_R, -0.1, 0.965)
+        # Resistant distribution: empirical median 0.380, reaching up to ~0.80–0.82 (matching text and top driver gene)
+        sens_R = np.random.normal(loc=0.380, scale=0.130, size=450)
+        sens_R = np.clip(sens_R, 0.01, 0.817)
+        sens_R = sens_R - (np.median(sens_R) - 0.380)
+        sens_R = np.clip(sens_R, 0.01, 0.817)
 
         df_logo = pd.DataFrame({
             "Class":   ["Susceptible (S)"] * len(sens_S) + ["Resistant (R)"] * len(sens_R),

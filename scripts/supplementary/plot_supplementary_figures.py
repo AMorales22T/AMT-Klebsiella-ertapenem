@@ -171,8 +171,8 @@ def make_fig_s2():
 
 
 def make_fig_s3():
-    """Supplementary Figure S3: Model Error Analysis & Predicted Probability Distributions."""
-    print("  --> Generating Supplementary Figure S3 (Error Analysis & Predictions)...")
+    """Supplementary Figure S3: Model Error Analysis & Predicted Probability Distributions (Historical Comparator)."""
+    print("  --> Generating Supplementary Figure S3 (Error Analysis & Predictions - Historical Comparator)...")
     pred_path = ROOT / "results" / "random_split_predictions.csv"
     df = pd.read_csv(pred_path)
     y_val = df["y_true"].values
@@ -212,13 +212,13 @@ def make_fig_s3():
     ax_box.spines["left"].set_color("#0f172a")
     ax_box.spines["bottom"].set_color("#0f172a")
     ax_box.legend(loc="upper left", frameon=False)
-    ax_box.text(-0.16, 1.06, "a", transform=ax_box.transAxes, fontsize=10, fontweight="bold", va="bottom", ha="left")
+    ax_box.text(-0.16, 1.06, "a", transform=ax_box.transAxes, fontsize=12, fontweight="bold", va="bottom", ha="left")
 
-    # Panel b: Validation ROC curve
+    # Panel b: Validation ROC curve (Historical comparator)
     fpr, tpr, _ = roc_curve(y_val, y_score)
     roc_auc = auc(fpr, tpr)
 
-    ax_roc.plot(fpr, tpr, color="#3C5488", lw=1.5, label=f"MIL v5.3 (AUC = {roc_auc:.4f})")
+    ax_roc.plot(fpr, tpr, color="#3C5488", lw=1.5, label=f"Historical comparator (AUC = {roc_auc:.4f})")
     ax_roc.plot([0, 1], [0, 1], color="#94a3b8", linestyle=(0, (4, 3)), lw=0.9, label="Chance")
 
     ax_roc.set_xlim(-0.015, 1.015)
@@ -231,7 +231,7 @@ def make_fig_s3():
     ax_roc.spines["left"].set_color("#0f172a")
     ax_roc.spines["bottom"].set_color("#0f172a")
     ax_roc.legend(loc="lower right", frameon=False)
-    ax_roc.text(-0.16, 1.06, "b", transform=ax_roc.transAxes, fontsize=10, fontweight="bold", va="bottom", ha="left")
+    ax_roc.text(-0.16, 1.06, "b", transform=ax_roc.transAxes, fontsize=12, fontweight="bold", va="bottom", ha="left")
 
     plt.tight_layout()
     fig.savefig(OUT / "Supplementary_Figure_S3_Error_Analysis.png", dpi=300, bbox_inches="tight", facecolor="#ffffff")
