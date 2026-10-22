@@ -42,10 +42,10 @@ def make_figure():
     real_npy = next((p for p in real_npy_candidates if p.exists()), None)
 
     hotspots = [
-        (60,  75,  2.5, "nt 60–75\nSignal peptide"),
-        (160, 175, 4.7, "nt 160–175\nPeak (4.70)"),
-        (230, 245, 3.1, "nt 230–245\nα1 helix"),
-        (380, 400, 1.8, "nt 380–400\nSDN motif"),
+        (60,  75,  2.5, "nt 60–75"),
+        (160, 175, 4.7, "nt 160–175"),
+        (230, 245, 3.1, "nt 230–245"),
+        (380, 400, 1.8, "nt 380–400"),
     ]
 
     if real_npy:
@@ -117,11 +117,11 @@ def make_figure():
         color="#1a1a1a", labelpad=4,
     )
 
-    # ── 6. Panel label ────────────────────────────────────────────────
-    ax.text(-0.052, 1.06, "a",
-            transform=ax.transAxes,
-            fontsize=12, fontweight="bold",
-            va="bottom", ha="left", color="#000000")
+    # ── 6. Panel label (omitted for single-panel Figure 4) ────────────
+    # ax.text(-0.052, 1.06, "a",
+    #         transform=ax.transAxes,
+    #         fontsize=12, fontweight="bold",
+    #         va="bottom", ha="left", color="#000000")
 
     # ── 7. Hotspot brackets & labels ─────────────────────────────────
     for start, end, amp, label in hotspots:
@@ -135,8 +135,8 @@ def make_figure():
 
         center_x = (start + end) / 2.0
         ax.text(center_x, y_b + 0.12, label,
-                fontsize=7.2, ha="center", va="bottom",
-                color="#1a1a1a", linespacing=0.85)
+                fontsize=7.8, ha="center", va="bottom",
+                color="#1a1a1a")
 
     # ── 8. Save ───────────────────────────────────────────────────────
     fig.savefig(OUT / "Figure4_updated.png",
