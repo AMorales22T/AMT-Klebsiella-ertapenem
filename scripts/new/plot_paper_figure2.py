@@ -191,29 +191,28 @@ def make_figure():
             fontsize=8.8, color=TEXT_C, zorder=4,
         )
 
-    # ── ΔAUC bracket (minimal: thin bracket + one short label) ───────
-    delta_auc = auc_mil - auc_rs
-    pct_drop  = (delta_auc / auc_rs) * 100
-
-    y_top = max(auc_rs, auc_mil) + max(ci_rs, ci_mil) + 0.040
-    hb    = 0.010   # bracket arm height
-
-    ax_bar.plot(
-        [0, 0, 1, 1],
-        [y_top - hb, y_top, y_top, y_top - hb],
-        color=COL_BASE, lw=1.0, zorder=5,
-    )
-    ax_bar.text(
-        0.5, y_top + 0.007,
-        f"ΔAUC = {delta_auc:.3f} ({pct_drop:.1f}%)",
-        ha="center", va="bottom",
-        fontsize=8.5, color=COL_BASE, zorder=5,
-    )
+    # ── ΔAUC bracket (omitted: keeping only the 3 bars with values and error bars) ──
+    # delta_auc = auc_mil - auc_rs
+    # pct_drop  = (delta_auc / auc_rs) * 100
+    # y_top = max(auc_rs, auc_mil) + max(ci_rs, ci_mil) + 0.040
+    # hb    = 0.010   # bracket arm height
+    # ax_bar.plot(
+    #     [0, 0, 1, 1],
+    #     [y_top - hb, y_top, y_top, y_top - hb],
+    #     color=COL_BASE, lw=1.0, zorder=5,
+    # )
+    # ax_bar.text(
+    #     0.5, y_top + 0.007,
+    #     f"ΔAUC = {delta_auc:.3f} ({pct_drop:.1f}%)",
+    #     ha="center", va="bottom",
+    #     fontsize=8.5, color=COL_BASE, zorder=5,
+    # )
 
     ax_bar.set_xticks(x_pos)
     ax_bar.set_xticklabels(models, color=TEXT_C, linespacing=1.2)
     ax_bar.set_ylabel("ROC-AUC", color=TEXT_C)
-    ax_bar.set_ylim(0.60, 1.12)
+    ax_bar.set_ylim(0.60, 1.08)
+    ax_bar.set_yticks([0.60, 0.70, 0.80, 0.90, 1.00])
 
     for sp in ["top", "right"]:
         ax_bar.spines[sp].set_visible(False)
