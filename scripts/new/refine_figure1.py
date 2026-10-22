@@ -163,7 +163,7 @@ def make_figure():
     stage_bg(0.575, 0.280, 0.405, 0.495,
              "c", "RESISTANCE CLASSIFICATION", S3, S3_BG)
 
-    stage_bg(0.250, 0.020, 0.555, 0.185,
+    stage_bg(0.250, 0.020, 0.730, 0.185,
              "d", "INTERPRETABILITY & VALIDATION", S4, S4_BG)
 
     # ═══════════════════════════════════════════════════════════════
@@ -525,25 +525,31 @@ def make_figure():
     # 4. INTERPRETABILITY & VALIDATION (Clean Stepped Routing)
     # ═══════════════════════════════════════════════════════════════
 
-    # Three blocks across the bottom row
+    # Three blocks across the bottom row (widened to align with Panel c at x = 0.965 / 0.980)
     ib_y = 0.050
     ib_h = 0.080
+    b_w = 0.205
+    b_gap = 0.040
 
-    box(0.270, ib_y, 0.155, ib_h,
+    b1_x = 0.270
+    b2_x = b1_x + b_w + b_gap  # 0.515
+    b3_x = b2_x + b_w + b_gap  # 0.760 (ends at 0.965, matching Prediction block above)
+
+    box(b1_x, ib_y, b_w, ib_h,
         "SHAP attribution", edge=S4, fs=9.2,
         subtitle="768 latent dimensions ranked")
 
-    box(0.455, ib_y, 0.165, ib_h,
+    box(b2_x, ib_y, b_w, ib_h,
         "Gene backtracking", edge=S4, fs=9.2,
         subtitle=r"attention $\alpha_i$ + SHAP correlation")
 
-    box(0.650, ib_y, 0.155, ib_h,
+    box(b3_x, ib_y, b_w, ib_h,
         "BLAST validation", edge=S4, fs=9.2,
         subtitle="NCBI / CARD RefSeq alignment")
 
     # Flow arrows between interpretability blocks
-    heavy_arrow((0.425, ib_y + ib_h/2), (0.455, ib_y + ib_h/2))
-    heavy_arrow((0.620, ib_y + ib_h/2), (0.650, ib_y + ib_h/2))
+    heavy_arrow((b1_x + b_w, ib_y + ib_h / 2), (b2_x, ib_y + ib_h / 2))
+    heavy_arrow((b2_x + b_w, ib_y + ib_h / 2), (b3_x, ib_y + ib_h / 2))
 
     # Clean Stepped Connector from XGBoost to SHAP:
     # 1. Drops from bottom of XGBoost into the clear corridor (y = 0.240)
