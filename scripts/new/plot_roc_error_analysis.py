@@ -122,12 +122,19 @@ def make_figure():
     ax_box.set_xlabel("")
     ax_box.set_ylim(-0.02, 1.02)
 
+    ax_box.set_xticks(range(4))
+    ax_box.set_xticklabels(
+        ["True Positive\n(TP)", "True Negative\n(TN)", "False Negative\n(VME)", "False Positive\n(ME)"],
+        fontsize=8.5,
+        color=TEXT_C
+    )
+
     for sp in ["top", "right"]:
         ax_box.spines[sp].set_visible(False)
     ax_box.spines["left"].set_color(TEXT_C)
     ax_box.spines["bottom"].set_color(TEXT_C)
 
-    ax_box.legend(loc="lower left", frameon=False)
+    ax_box.legend(loc="upper center", bbox_to_anchor=(0.50, 0.98), frameon=False, fontsize=8.5)
 
     # Subplot header & panel label
     ax_box.text(0.5, 1.02, "Probability Distribution by Classification Outcome",

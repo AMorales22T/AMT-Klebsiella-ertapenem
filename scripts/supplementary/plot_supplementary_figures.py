@@ -209,7 +209,7 @@ def make_fig_s3():
         boxprops=dict(alpha=0.85),
         fliersize=2.2, legend=False
     )
-    ax_box.axhline(0.50, linestyle=(0, (4, 3)), color="#64748b", lw=0.9, label="Threshold 0.50")
+    ax_box.axhline(0.50, linestyle=(0, (4, 3)), color="#64748b", lw=0.9, label="Default threshold (0.50)")
     ax_box.set_ylabel("Predicted probability of resistance", color="#0f172a", fontsize=8.8)
     ax_box.set_xlabel("Isolate classification outcome", color="#0f172a", fontsize=8.8)
     ax_box.set_ylim(-0.02, 1.05)

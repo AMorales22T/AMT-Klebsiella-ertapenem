@@ -62,13 +62,25 @@ def make_figure():
     arr[:68, :, :] = 255
 
     # ── 3. Clean Underscores from Y-Axis Feature Labels ───────────────
-    # Surgically clear only the underscore baseline (y_approx + 8 to 15, x: 55 to 76)
+    # Surgically clear only the underscore baseline (y_approx + 6 to 17)
+    # dynamically accounting for right-aligned 3-digit, 2-digit, and 1-digit labels
     # leaving 'Dim' letters and feature numbers completely intact
     for i in range(20):
         y_approx = 95 + i * 52.63
-        y_start = int(round(y_approx + 8))
-        y_end   = int(round(y_approx + 15))
-        arr[y_start:y_end, 55:76] = 255
+        y_start = int(round(y_approx + 6))
+        y_end   = int(round(y_approx + 17))
+
+        row_text = arr[int(y_approx - 15):int(y_approx + 15), :140]
+        dark_xs = np.where(np.mean(row_text, axis=-1) < 150)[1]
+        if len(dark_xs) > 0:
+            x_min = dark_xs.min()
+            if x_min < 22:      # 3-digit (e.g. Dim_550): starts at ~15, underscore at ~55..73
+                x_u0, x_u1 = 55, 73
+            elif x_min < 38:    # 2-digit (e.g. Dim_58): starts at ~30, underscore at ~70..88
+                x_u0, x_u1 = 70, 88
+            else:               # 1-digit (e.g. Dim_5): starts at ~45, underscore at ~85..103
+                x_u0, x_u1 = 85, 103
+            arr[y_start:y_end, x_u0:x_u1] = 255
 
     # ── 4. Nature Portfolio NPG Blue-to-Coral Palette Mapping ─────────
     cmap_npg = mcolors.LinearSegmentedColormap.from_list(
@@ -150,8 +162,8 @@ def make_figure():
     if font_label is None:
         font_label = ImageFont.load_default()
 
-    # Nature panel label 'a'
-    draw.text((22, 24), "a", fill="#000000", font=font_a)
+    # Single panel figure — redundant panel label 'a' removed per journal guidelines
+    # draw.text((22, 24), "a", fill="#000000", font=font_a)
 
     # Colorbar labels (High / Low)
     draw.text((908, cb_y0 - 4), "High", fill="#1a1a1a", font=font_label)
