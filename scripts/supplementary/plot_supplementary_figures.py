@@ -178,40 +178,49 @@ def make_fig_s3():
     y_val = df["y_true"].values
     y_score = df["y_score"].values
 
-    preds = (y_score >= 0.50).astype(int)
     error_type = []
-    for yt, yp in zip(y_val, preds):
-        if yt == yp:
-            error_type.append("Correct")
+    for yt, score in zip(y_val, y_score):
+        yp = int(score >= 0.50)
+        if yt == 1 and yp == 1:
+            error_type.append("True Positive (TP)")
+        elif yt == 0 and yp == 0:
+            error_type.append("True Negative (TN)")
         elif yt == 1 and yp == 0:
-            error_type.append("FN (VME)")
-        else:
-            error_type.append("FP (ME)")
+            error_type.append("False Negative (VME)")
+        elif yt == 0 and yp == 1:
+            error_type.append("False Positive (ME)")
     df["error_type"] = error_type
 
-    fig, (ax_box, ax_roc) = plt.subplots(1, 2, figsize=(8.8, 3.8), dpi=300, facecolor="#ffffff")
+    fig, (ax_box, ax_roc) = plt.subplots(1, 2, figsize=(9.2, 4.0), dpi=300, facecolor="#ffffff")
 
     # Panel a: Boxplot of predicted probability
-    order = ["Correct", "FN (VME)", "FP (ME)"]
-    palette = {"Correct": "#00A087", "FN (VME)": "#E64B35", "FP (ME)": "#E69F00"}
+    order = ["True Positive (TP)", "True Negative (TN)", "False Negative (VME)", "False Positive (ME)"]
+    palette = {
+        "True Positive (TP)": "#3C5488",
+        "True Negative (TN)": "#00A087",
+        "False Negative (VME)": "#E64B35",
+        "False Positive (ME)": "#E69F00"
+    }
 
     sns.boxplot(
-        data=df, x="error_type", y="y_score",
+        data=df, x="error_type", y="y_score", hue="error_type",
         order=order, palette=palette, ax=ax_box,
         width=0.45, linewidth=0.8,
         boxprops=dict(alpha=0.85),
-        fliersize=2.5
+        fliersize=2.2, legend=False
     )
-    ax_box.axhline(0.50, linestyle=(0, (4, 3)), color="#94a3b8", lw=0.9, label="Threshold 0.50")
-    ax_box.set_ylabel("Predicted probability of resistance", color="#0f172a")
-    ax_box.set_xlabel("Isolate classification outcome", color="#0f172a")
-    ax_box.set_ylim(-0.02, 1.02)
+    ax_box.axhline(0.50, linestyle=(0, (4, 3)), color="#64748b", lw=0.9, label="Threshold 0.50")
+    ax_box.set_ylabel("Predicted probability of resistance", color="#0f172a", fontsize=8.8)
+    ax_box.set_xlabel("Isolate classification outcome", color="#0f172a", fontsize=8.8)
+    ax_box.set_ylim(-0.02, 1.05)
+    ax_box.set_xticks(range(4))
+    ax_box.set_xticklabels(["True Positive\n(TP)", "True Negative\n(TN)", "False Negative\n(VME)", "False Positive\n(ME)"], fontsize=7.5, color="#0f172a")
 
     for sp in ["top", "right"]:
         ax_box.spines[sp].set_visible(False)
     ax_box.spines["left"].set_color("#0f172a")
     ax_box.spines["bottom"].set_color("#0f172a")
-    ax_box.legend(loc="upper left", frameon=False)
+    ax_box.legend(loc="upper center", bbox_to_anchor=(0.50, 0.98), frameon=False, fontsize=8.0)
     ax_box.text(-0.16, 1.06, "a", transform=ax_box.transAxes, fontsize=12, fontweight="bold", va="bottom", ha="left")
 
     # Panel b: Validation ROC curve (Historical comparator)
@@ -223,14 +232,14 @@ def make_fig_s3():
 
     ax_roc.set_xlim(-0.015, 1.015)
     ax_roc.set_ylim(-0.015, 1.015)
-    ax_roc.set_xlabel("False positive rate (1 − Specificity)", color="#0f172a")
-    ax_roc.set_ylabel("True positive rate (Sensitivity)", color="#0f172a")
+    ax_roc.set_xlabel("False positive rate (1 − Specificity)", color="#0f172a", fontsize=8.8)
+    ax_roc.set_ylabel("True positive rate (Sensitivity)", color="#0f172a", fontsize=8.8)
 
     for sp in ["top", "right"]:
         ax_roc.spines[sp].set_visible(False)
     ax_roc.spines["left"].set_color("#0f172a")
     ax_roc.spines["bottom"].set_color("#0f172a")
-    ax_roc.legend(loc="lower right", frameon=False)
+    ax_roc.legend(loc="lower right", frameon=False, fontsize=8.2)
     ax_roc.text(-0.16, 1.06, "b", transform=ax_roc.transAxes, fontsize=12, fontweight="bold", va="bottom", ha="left")
 
     plt.tight_layout()

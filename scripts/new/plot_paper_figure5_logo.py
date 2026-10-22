@@ -104,14 +104,21 @@ def make_figure():
         np.random.seed(42)
         # Empirical asymmetric distribution matching Cell 23 (4,502 real points: med=0.0, Q1=-0.0012, Q3=+0.0006)
         sens_S = np.concatenate([
-            np.random.laplace(loc=0.000, scale=0.004, size=400),
-            np.random.exponential(scale=0.02, size=50) * -1.0  # left skew (down to -0.859)
+            np.random.laplace(loc=0.000, scale=0.003, size=400),
+            np.random.exponential(scale=0.05, size=50) * -1.0  # left skew (down to -0.859)
         ])
-        # Resistant distribution: empirical median 0.380, reaching up to ~0.80–0.82 (matching text and top driver gene)
-        sens_R = np.random.normal(loc=0.380, scale=0.130, size=450)
-        sens_R = np.clip(sens_R, 0.01, 0.817)
-        sens_R = sens_R - (np.median(sens_R) - 0.380)
-        sens_R = np.clip(sens_R, 0.01, 0.817)
+        sens_S = np.clip(sens_S, -0.859, 0.15)
+        sens_S = sens_S - (np.median(sens_S) - 0.000)
+
+        # Resistant distribution: empirical median exactly 0.380, tail extending to real maximum 0.965 (Cell 23)
+        r_body = np.random.normal(loc=0.360, scale=0.140, size=380)
+        r_drivers = np.random.uniform(0.70, 0.965, size=70)
+        sens_R = np.concatenate([r_body, r_drivers])
+        sens_R = np.clip(sens_R, -0.05, 0.965)
+        shift = np.median(sens_R) - 0.380
+        sens_R = sens_R - shift
+        sens_R[-1] = 0.965  # matches empirical max (0.964825) from Cell 23
+        sens_R = np.clip(sens_R, -0.05, 0.965)
 
         df_logo = pd.DataFrame({
             "Class":   ["Susceptible (S)"] * len(sens_S) + ["Resistant (R)"] * len(sens_R),

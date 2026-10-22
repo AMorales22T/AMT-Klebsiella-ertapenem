@@ -43,8 +43,9 @@ def make_figure():
 
     hotspots = [
         (60,  75,  2.5, "nt 60–75\nSignal peptide"),
-        (205, 220, 4.5, "nt 205–220\nActive site Ser70"),
-        (380, 400, 3.2, "nt 380–400\nSDN loop motif"),
+        (160, 175, 4.7, "nt 160–175\nPeak (4.70)"),
+        (230, 245, 3.1, "nt 230–245\nα1 helix"),
+        (380, 400, 1.8, "nt 380–400\nSDN motif"),
     ]
 
     if real_npy:
@@ -103,9 +104,9 @@ def make_figure():
     ax.spines["bottom"].set_color("#1a1a1a")
 
     ax.set_xlim(0, 513)
-    ax.set_ylim(0, 6.2)
+    ax.set_ylim(0, 6.6)
     ax.set_xticks([1, 100, 200, 300, 400, 512])
-    ax.set_yticks([0, 1, 2, 3, 4, 5])
+    ax.set_yticks([0, 1, 2, 3, 4, 5, 6])
 
     ax.set_xlabel(
         r"Nucleotide position in $\it{bla}_{\mathrm{KPC\text{-}2}}$ CDS (bp 1–512)",
@@ -134,7 +135,7 @@ def make_figure():
 
         center_x = (start + end) / 2.0
         ax.text(center_x, y_b + 0.12, label,
-                fontsize=7.8, ha="center", va="bottom",
+                fontsize=7.2, ha="center", va="bottom",
                 color="#1a1a1a", linespacing=0.85)
 
     # ── 8. Save ───────────────────────────────────────────────────────
