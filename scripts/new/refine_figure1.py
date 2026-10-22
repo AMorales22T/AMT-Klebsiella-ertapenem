@@ -339,7 +339,7 @@ def make_figure():
     # Labels below gene bag cards
     ax.text(cx, 0.355 + dy, r"$\bf{Variable\ resistome\ bag\ } B_j = \{g_1, \dots, g_{M_j}\}$",
             fontsize=7.4, ha="center", va="center", color=TEXT, zorder=4)
-    ax.text(cx, 0.337 + dy, r"Resistome profile ($M_j \in [1, 35]$ genes per isolate)",
+    ax.text(cx, 0.337 + dy, r"Resistome profile ($M_j \in [1, 50]$ genes per isolate)",
             fontsize=6.6, ha="center", va="center", color=MUTED, zorder=4)
     ax.text(cx, 0.320 + dy, "Extracted CDS nucleotide sequences",
             fontsize=6.3, fontstyle="italic", ha="center", va="center", color=LIGHT, zorder=4)
