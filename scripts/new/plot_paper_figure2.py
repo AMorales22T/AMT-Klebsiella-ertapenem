@@ -80,7 +80,20 @@ def make_figure():
     ci_mil = 1.96 * np.sqrt(var_mil)
     ci_xgb = 1.96 * np.sqrt(var_xgb)
 
-    fpr_baseline, tpr_baseline = 0.3607, 0.9544
+    # Compute biological rule baseline directly from deposited isolate-level calls
+    carb_path = ROOT / "results" / "isolate_carbapenemase_calls_3702.csv"
+    if carb_path.exists():
+        carb_df = pd.read_csv(carb_path)
+        yt_c = carb_df["y_true"].astype(int).values
+        yp_c = carb_df["has_carbapenemase_gene"].astype(int).values
+        tp_c = np.sum((yt_c == 1) & (yp_c == 1))
+        fn_c = np.sum((yt_c == 1) & (yp_c == 0))
+        fp_c = np.sum((yt_c == 0) & (yp_c == 1))
+        tn_c = np.sum((yt_c == 0) & (yp_c == 0))
+        fpr_baseline = float(fp_c / (fp_c + tn_c))
+        tpr_baseline = float(tp_c / (tp_c + fn_c))
+    else:
+        fpr_baseline, tpr_baseline = 0.3665, 0.9572
 
     # ── Global typography (Nature standard, enlarged for publication) ──
     matplotlib.rcParams.update({
